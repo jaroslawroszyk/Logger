@@ -1,7 +1,6 @@
 #include "logger.hpp"
 #include <iostream>
 #include <ctime>
-#include <ostream>
 #include <fstream>
 #include <type_traits>
 #include <experimental/filesystem>
@@ -9,15 +8,15 @@
 using namespace std::experimental::filesystem;
 
 template <typename T>
-    requires std::is_same_v<T, std::fstream> bool
-checkFile(T &file)
+    requires std::is_same_v<T, std::fstream>
+auto checkFile(T &file) -> bool
 {
     if (not file)
         throw std::runtime_error("Failed to open file");
     return file.is_open();
 }
 
-void Logger::log(char type, const std::string &msg)
+auto Logger::log(char type, const std::string &msg) -> void
 {
     std::string fileName = "foo.log";
     static std::fstream file(fileName, std::ios::out);
@@ -41,11 +40,13 @@ void Logger::log(char type, const std::string &msg)
 //     }
 // }
 
-//todo improve
-std::string Logger::currentDateTime()
+// todo improve
+auto Logger::currentDateTime() -> std::string
 {
     std::time_t now = time(nullptr);
-    struct tm tstruct{};
+    struct tm tstruct
+    {
+    };
     char buf[80];
     tstruct = *localtime(&now);
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);

@@ -1,15 +1,14 @@
 #pragma once
 #include <string>
-#include <fstream>
 
 class Logger
 {
 public:
-    static void log(char type, const std::string& msg);
+    static auto log(char type, const std::string& msg) -> void;
     // template<typename T>
     // static void log(const T&);
 private:
-    static std::string currentDateTime();
+    static auto currentDateTime() -> std::string;
 };
 
 #define LOG_DEBUG(msg) Logger::log('I',msg)
